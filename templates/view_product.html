@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+{% block body %}
+<!-- Page Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3 my-4">
+            <div class="list-group">
+                <a href="/dairybeverages" class="list-group-item">Dairy and Beverages</a>
+                <a href="/fruits" class="list-group-item">Fruits</a>
+                <a href="/grocery" class="list-group-item">Grocery</a>
+                <a href="/Vegetables" class="list-group-item">Vegetables</a>
+            </div>
+        </div>
+        <!-- /.col-lg-3 -->
+        <div class="col-lg-9">
+            <div class="row">
+                {% for product in products %}
+                <div class="col-lg-6">
+                    <div class="card mt-4">
+                        <img class="card-img-top img-fluid"
+                             src="../static/groceryimages/{{product.imagename}}" alt="">
+                    </div>
+                </div>
+                <!-- /.card -->
+                <div class="col-lg-6">
+                    <div class="card card-outline-secondary my-4">
+                        <div class="card-header">
+                            Product Details
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">{{ product.pName}}</h3>
+                            <h4>Rs.{{ product.price}}</h4>
+                            <p class="card-text">{{ product.description}}</p>
+                            <a href="/{{product.category}}?order={{product.id}}" class="btn btn-success">Order Now</a>&emsp;&emsp;
+                            <a href="/cart?pid={{product.id}}&pname={{ product.name}}&price={{ product.price}}&cat={{product.category}}&user={{session.uid}}" class="btn btn-success">Add to Cart</a>
+                            <!--<form>
+                                <input type="hidden" name="prodid" value="{{product.id}}">
+                                <input type="hidden" name="prodname" value="{{ product.name}}">
+                                <input type="hidden" name="price" value="{{ product.price}}">
+                                <input type="hidden" name="category" value="{{product.category}}">
+                                <button type="submit" class="btn btn-success btn-lg">Add to Cart</button>
+                            </form>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- /.card -->
+            </div>
+        </div>
+        <!-- /.col-lg-9 -->
+    </div>
+    <!-- /.row -->
+</div><hr><br>
+<!-- /.container -->
+{% endblock %}

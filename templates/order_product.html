@@ -1,0 +1,227 @@
+{% extends 'layout.html' %}
+{% block body %}
+<!-- Page Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3 my-4">
+            <div class="list-group">
+                <a href="/dairybeverages" class="list-group-item">Dairy and Beverages</a>
+                <a href="/fruits" class="list-group-item">Fruits</a>
+                <a href="/grocery" class="list-group-item">Grocery</a>
+                <a href="/Vegetables" class="list-group-item">Vegetables</a>
+            </div>
+        </div>
+        <!-- /.col-lg-3 -->
+        <div class="col-lg-9">
+            <div class="row">
+                {% for product in products %}
+                <div class="col-lg-6">
+                    <div class="card mt-4">
+                        <img class="card-img-top img-fluid"
+                             src="../static/groceryimages/{{product.imagename}}" alt="">
+                    </div>
+                </div>
+                <!-- /.card -->
+                <div class="col-lg-6">
+                    <div class="card card-outline-secondary my-4">
+                        <div class="card-header">
+                            Order Details
+                        </div>
+                        <div class="card-body">
+                            {% from "includes/_formhelpers.html" import render_field %}
+                            <form method="POST" action="/{{product.category}}?order={{product.id}}">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    {{render_field(form.name, class_="form-control", value=name)}}
+                                </div>
+                                <div class="form-group">
+                                    <label>Mobile</label>
+                                    {{render_field(form.mobile_num, class_="form-control", value=mobile)}}
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Quantity</label>
+                                    {{render_field(form.quantity, class_="form-control")}}
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Order Place</label>
+                                    {{render_field(form.order_place, class_="form-control", value=address)}}
+                                </div>
+                                <div class="form-group">
+                                    <label>No of People</label>
+                                    <input type="text" class="form-control" name="noofpeople" placeholder="no. of people" value="{{people}}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Children</label>
+                                    <input type="text" class="form-control" name="children" placeholder="Children" value="{{children}}">
+                                </div>
+                                <input type="checkbox"  id="chkbox" onclick="showpaymentgateway()"> Cash on delivery
+                                <br><br>
+
+                                <div id="paymentgateway">
+                                    <div class="form-group">
+                                        <label><strong> 5% discount on SBI card payment </strong></label><br>
+                                        <label><strong> 10% discount on AXIS card payment </strong></label><br>
+                                        <label><strong> 7% discount on HDFC card payment </strong></label><br>
+                                        <label><strong> 15% discount on ICICI card payment </strong></label><br>
+                                    </div>
+                                    <div class="form-group">
+                                        <select name="bankname" id="bankname" onload="changeMessage()" class="form-control">
+                                            <option value="">Select card</option>
+                                            <!--<option value="SBI" {% if bankname == "SBI" %} selected="selected"{% endif %}>SBI</option>
+                                            <option value="AXIS" {% if bankname == "AXIS" %} selected="selected"{% endif %} >AXIS</option>
+                                            <option value="HDFC" {% if bankname == "HDFC" %} selected="selected"{% endif %}>HDFC</option>
+                                            <option value="ICICI" {% if bankname == "ICICI" %} selected="selected"{% endif %}>ICICI</option>-->
+                                            <!--{% for b in bankname %}
+                                                <option value="{{b}}">{{b}}</option>
+                                            {% endfor %}-->
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <p id="offer"></p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Card no.</label>
+                                        <input type="text" class="form-control" name="cardno" placeholder="Card no." value="{{carddetails}}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Expiry</label>
+                                        <input type="text" class="form-control" name="expirydate" placeholder="Expiry" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>CVV</label>
+                                        <input type="text" class="form-control" name="cvv" placeholder="CVV" required>
+                                    </div>
+                                </div>
+                                <!--<input type="checkbox"  id="chkbox" placeholder="CVV" required> cash on delivery
+                                <br><br>-->
+                                <button type="submit" class="btn btn-primary">Confirm Order</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- /.card -->
+
+            </div>
+            {% if x == '' %}
+            <h2 class="mb-4">No recommendation found</h2>
+            {% else%}
+            <h2 class="mb-4">Recommended for you:</h2>
+            <div class="row">
+                {% for product in x %}
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="card mb-4">
+                        <a href="/{{product.category}}?view={{product.id}}">
+                            <div class="card-img-top id_{{product.id}}"
+                                 style="background: url('../static/groceryimages/{{product.imagename}}'); background-repeat:no-repeat; background-size: cover; height:200px;width:100% "></div>
+                        </a>
+                        <div class="card-body">
+                            <h5><a class="card-title" href="/{{product.category}}?view={{product.id}}">{{ product.name}}</a></h5>
+                            <h4>₹{{product.price}}</h4>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function changeMessage()
+    {
+        var SBI = 5;
+        var AXIS = 10;
+        var HDFC = 7;
+        var ICICI = 15;
+
+        if (document.getElementById("bankname").value == "SBI")
+        {
+            document.getElementById("offer").innerHTML = "SBI 5% discount Bank offer applied";
+        }
+        else if (document.getElementById("bankname").value == "AXIS")
+        {
+            document.getElementById("offer").innerHTML = "AXIS 10% discount Bank offer applied";
+        }
+        else if(document.getElementById("bankname").value == "HDFC")
+        {
+            document.getElementById("offer").innerHTML = "HDFC 7% discount Bank offer applied";
+        }else if(document.getElementById("bankname").value == "ICICI")
+        {
+            document.getElementById("offer").innerHTML = "ICICI 15% discount Bank offer applied";
+        }else
+        {
+            document.getElementById("offer").innerHTML = "";
+        }
+
+        $("#bankname option[value='ICICI']").length > 0;
+
+
+        /*var ddlArray= new Array();
+        var ddl = document.getElementById('bankname');
+        for (i = 0; i < ddl.options.length; i++) {
+           ddlArray[i] = ddl.options[i].value;
+        }*/
+
+    }
+
+    function showpaymentgateway()
+    {
+        var checkBox = document.getElementById("chkbox");
+        var div1 = document.getElementById("paymentgateway");
+        if (checkBox.checked == true)
+        {
+            div1.style.display = "none";
+        } else
+        {
+            div1.style.display = "block";
+        }
+    }
+
+    $( document ).ready(function() {
+
+            {% for b in bankname %}
+
+                $('#bankname').append('<option value="{{b}}">{{b}}</option>');
+
+                if ( $("#bankname option[value='ICICI']").length > 0 ){
+                    $("#bankname option[value='ICICI']").prop('selected', true);
+                    document.getElementById("offer").innerHTML = "ICICI 15% discount Bank offer applied";
+               }
+            else if( $("#bankname option[value='AXIS']").length > 0 ){
+                    $("#bankname option[value='AXIS']").prop('selected', true);
+                    document.getElementById("offer").innerHTML = "AXIS 10% discount Bank offer applied";
+               }
+            else if( $("#bankname option[value='HDFC']").length > 0 ){
+                    $("#bankname option[value='HDFC']").prop('selected', true);
+                    document.getElementById("offer").innerHTML = "HDFC 7% discount Bank offer applied";
+               }
+            else{
+                    $("#bankname option[value='SBI']").prop('selected', true);
+                    document.getElementById("offer").innerHTML = "SBI 5% discount Bank offer applied";
+               }
+
+            {% endfor %}
+
+
+changeMessage();
+
+        $('#bankname').on('change', function() {
+          //alert(this.value);
+
+
+
+
+            changeMessage();
+
+
+        });
+    });
+
+</script>
+
+{% endblock %}

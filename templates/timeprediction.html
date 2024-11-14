@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<br><br>
+<div class="jumbotron">
+    <h2 style="text-align: center; color: #206aaa;">Time prediction Form</h2>
+
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <form method="POST" action="/timeprediction">
+            <div class="form-group">
+                <input type="number" class="form-control"min="1" name="item" placeholder="Item" required>
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-control" min="1" name="iteminkg" placeholder="Item in kg" required>
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-control" min="1" name="people" placeholder="People" required>
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-control" min="1" name="children" placeholder="Children" required>
+            </div>
+            {% if predres != '': %}
+            <div class="form-group">
+                <p>{{predres}} Days</p>
+            </div>
+            {% endif %}
+            <button type="submit" class="btn btn-primary">Time prediction</button>
+        </form>
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+</div>
+{% endblock %}

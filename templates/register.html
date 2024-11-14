@@ -1,0 +1,83 @@
+{% extends 'layout.html' %}
+
+{% block body %}<br><br>
+<div class="jumbotron">
+    <h2 style="text-align: center; color: #206aaa;">Sign Up Form</h2>
+    {% from "includes/_formhelpers.html" import render_field %}
+    <!--<form method="POST" action="">
+        <div class="form-group">
+            {{render_field(form.name, class_="form-control")}}
+        </div>
+        <div class="form-group">
+            {{render_field(form.email, class="form-control")}}
+        </div>
+        <div class="form-group">
+            {{render_field(form.username, class="form-control")}}
+        </div>
+        <div class="form-group">
+            {{render_field(form.password, class="form-control")}}
+        </div>
+        <div class="form-group">
+            {{render_field(form.mobile, class="form-control")}}
+        </div>
+        <p>
+            <input type="submit" class="btn btn-primary" value="Sign Up">
+        </p>
+    </form>-->
+
+    <form method="POST" action="/register">
+            <div class="form-group">
+                <input type="text" class="form-control" minlength=3 pattern="[a-zA-Z\s]+" name="name" placeholder="Full Name" title="Please " required>
+            </div>
+            <div class="form-group">
+                <input type="email" class="form-control" minlength=4, max=50 name="email" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" minlength=4, max=25 name="username" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" minlength="2" name="password" placeholder="Password" required>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="mobile" placeholder="Mobile" pattern="[789][0-9]{9}" required>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="address" placeholder="Address" required>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="carddetails" placeholder="Card Details" required>
+            </div>
+            <div class="form-group">
+                <!--<select name="bankname" id="bankname" class="form-control">
+                    <option value="">Select card</option>
+                    <option value="SBI">SBI</option>
+                    <option value="AXIS">AXIS</option>
+                    <option value="HDFC">HDFC</option>
+                    <option value="ICICI">ICICI</option>
+                </select>-->
+                <label>Cards </label> <br>&emsp;
+                &emsp;<input type="checkbox" class="form-check-input" name="bankname" Value="SBI">SBI<br>&emsp;
+                &emsp;<input type="checkbox" class="form-check-input" name="bankname" Value="AXIS">AXIS<br>&emsp;
+                &emsp;<input type="checkbox" class="form-check-input" name="bankname" Value="HDFC">HDFC<br>&emsp;
+                &emsp;<input type="checkbox" class="form-check-input" name="bankname" Value="ICICI">ICICI<br>&emsp;
+            </div>
+
+
+
+            <div class="form-group">
+                <input type="number" class="form-control" min="1" name="people" placeholder="No of People" required>
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-control" min="0" name="children" placeholder="Children" required>
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-control" min="1" name="age" placeholder="Age" required>
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-control" min="6" name="pincode" placeholder="Pin code" required>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Sign Up">
+    </form>
+
+</div>
+{% endblock %}
